@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'classificationcomment'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_99EF51FACEDC48EF9C220C2E464526C6 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CB3DFC3177304C9DBDB6AF2F8E5625A4 }}
