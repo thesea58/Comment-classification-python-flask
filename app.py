@@ -5,6 +5,7 @@ from keras.models import load_model
 import numpy as np
 from keras_preprocessing.sequence import pad_sequences
 from underthesea import word_tokenize
+from static.connect_SQL_server import *
 
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1" # disable gpu
@@ -67,6 +68,7 @@ def r_predict():
         kq = [decode[i] for i in label_arr]
         result = ', '.join(kq) if (len(', '.join(kq).strip())>0) else 'thông tin không hợp lệ'
         print(result)
+        insert_DATA(text_post,result)
         print('-----------------------------------------')
         return result
     return 'thông tin không hợp lệ'
