@@ -74,4 +74,5 @@ def r_predict():
     return 'thông tin không hợp lệ'
 
 if __name__ == "__main__":
-  app.run('0.0.0.0','80', debug=True)
+#   app.run('0.0.0.0','80', debug=True)
+  app.run()
