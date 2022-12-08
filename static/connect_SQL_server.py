@@ -24,8 +24,7 @@ def connection_SQL():
     return cnxn,cursor
 
 #Sample select query
-def insert_DATA(comment,label):
-    cnxn,cursor = connection_SQL()
+def insert_DATA(comment,label,cnxn,cursor):
     currentDateAndTime = datetime.now()
 
     smalldatetime = currentDateAndTime

@@ -68,11 +68,11 @@ def r_predict():
         kq = [decode[i] for i in label_arr]
         result = ', '.join(kq) if (len(', '.join(kq).strip())>0) else 'thông tin không hợp lệ'
         print(result)
-        insert_DATA(text_post,result)
+        insert_DATA(text_post,result,cnxn,cursor)
         print('-----------------------------------------')
         return result
     return 'thông tin không hợp lệ'
 
 if __name__ == "__main__":
-#   app.run('0.0.0.0','80', debug=True)
-  app.run()
+    cnxn,cursor = connection_SQL();
+    app.run('0.0.0.0','80', debug=True)
