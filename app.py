@@ -13,7 +13,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1" # disable gpu
 max_len = 78
 # my model
 # model = load_model('model_3_BiLSTM.h5')
-model = load_model('2_cnn.h5')
+model = load_model('static/2_cnn.h5')
 
 decode = {
     0 : 'sản phẩm xấu chất lượng kém',
@@ -66,13 +66,13 @@ def r_predict():
         text_post = rq.form['comment']
         label_arr = predict(model,text_post)
         kq = [decode[i] for i in label_arr]
-        result = ', '.join(kq) if (len(', '.join(kq).strip())>0) else 'thông tin không hợp lệ'
+        result = ', '.join(kq) if (len(', '.join(kq).strip())>0) else 'thong tin khong hop le'
         print(result)
         insert_DATA(text_post,result,cnxn,cursor)
         print('-----------------------------------------')
         return result
-    return 'thông tin không hợp lệ'
+    return 'thong tin khong hop le'
 
 if __name__ == "__main__":
     cnxn,cursor = connection_SQL();
-    app.run('0.0.0.0','80', debug=True)
+    app.run()
