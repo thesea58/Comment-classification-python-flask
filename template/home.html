@@ -36,7 +36,7 @@
         <li>
           <!-- <label for="label"></label> -->
           <!-- <input type="text" class="inputFields" id="label" name="label" placeholder="dự đoán" disabled > -->
-          <h3 id="label">respons label</h3>
+          <h3 id="label">_________</h3>
 
         </li>
         
@@ -79,6 +79,7 @@
           var datas = {
               'comment': $('#txttext').val().trim()
           };
+
           $.ajax({
               type: "POST",
               url: "predict",
@@ -91,6 +92,7 @@
                   //$('#acc').html(accuracy);
                   $('#label').slideUp( 300 ).fadeIn( 400 );
                   $('#label').html(respone);
+                  console.log("Rows inserted: 1")
               }
           });
       });

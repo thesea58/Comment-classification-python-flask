@@ -26,13 +26,10 @@ def connection_SQL():
 #Sample select query
 def insert_DATA(comment,label,cnxn,cursor):
     currentDateAndTime = datetime.now()
-
-    smalldatetime = currentDateAndTime
-    count = cursor.execute("""INSERT INTO dbo.comment_table(noi_dung,class,ngay_them) 
-                    VALUES (?,?,?)""",comment,label,smalldatetime).rowcount
+    count = cursor.execute("""INSERT INTO dbo.comment_table(noi_dung,class,ngay_them) VALUES (?,?,?)""",comment,label,currentDateAndTime).rowcount
     cnxn.commit()
     print('Rows inserted: ' + str(count))
-
+    # return 'Rows inserted: ' + str(count)
 # VIEW TABLE
 # cursor.execute("SELECT * FROM comment_table;")
 # row = cursor.fetchone() 

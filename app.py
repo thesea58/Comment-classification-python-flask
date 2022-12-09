@@ -24,6 +24,7 @@ decode = {
 }
 word_id = {}
 
+
 # Load từ điển
 with open('word (1).txt','r',encoding='utf-8') as f:
     dem = 1
@@ -59,6 +60,7 @@ app = Flask(__name__,template_folder='template',static_folder='static')
 def home():
     return render_template('home.html')
 
+
 @app.route("/predict",methods=['GET','POST'])
 def r_predict():
     if 'comment' in rq.form.keys():
@@ -68,11 +70,19 @@ def r_predict():
         kq = [decode[i] for i in label_arr]
         result = ', '.join(kq) if (len(', '.join(kq).strip())>0) else 'thong tin khong hop le'
         print(result)
-        insert_DATA(text_post,result,cnxn,cursor)
+        try:
+            insert_DATA(text_post,result,cnxn,cursor)
+        except ValueError:
+            print(ValueError)
+        # cursor.close()
+        # cnxn.close()
+        
         print('-----------------------------------------')
         return result
     return 'thong tin khong hop le'
 
 if __name__ == "__main__":
+
     cnxn,cursor = connection_SQL();
+
     app.run()
