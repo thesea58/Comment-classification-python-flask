@@ -52,7 +52,14 @@ def predict(model,text):
             print(pre.max())
             arr.append(np.argmax(pre))
     return arr
-
+def insert_comment(comment):
+    cnxn,cursor = connection_SQL();
+    try:
+        insert_DATA(comment,result,cnxn,cursor)
+    except ValueError:
+        print(ValueError)
+    cursor.close()
+    cnxn.close()
 
 app = Flask(__name__,template_folder='template',static_folder='static')
 
@@ -62,27 +69,33 @@ def home():
 
 
 @app.route("/predict",methods=['GET','POST'])
+
 def r_predict():
-    if 'comment' in rq.form.keys():
-        print('-----------------------------------------')
-        text_post = rq.form['comment']
-        label_arr = predict(model,text_post)
-        kq = [decode[i] for i in label_arr]
-        result = ', '.join(kq) if (len(', '.join(kq).strip())>0) else 'thong tin khong hop le'
-        print(result)
-        try:
-            insert_DATA(text_post,result,cnxn,cursor)
-        except ValueError:
-            print(ValueError)
-        # cursor.close()
-        # cnxn.close()
-        
-        print('-----------------------------------------')
-        return result
-    return 'thong tin khong hop le'
+    try:
+
+        if 'comment' in rq.form.keys():
+            print('-----------------------------------------')
+            text_post = rq.form['comment']
+            label_arr = predict(model,text_post)
+            kq = [decode[i] for i in label_arr]
+            print(kq)
+            result = ', '.join(kq) if (len(', '.join(kq).strip())>0) else 'thong tin khong hop le'
+            print(result)
+            #insert_comment(result)
+            cnxn,cursor = connection_SQL();
+            try:
+                insert_DATA(text_post,result,cnxn,cursor)
+            except ValueError:
+                print(ValueError)
+            
+            print('-----------------------------------------')
+            return result
+        return 'thong tin khong hop le'
+    except Exception as e:
+        return str(e)
+
 
 if __name__ == "__main__":
 
-    cnxn,cursor = connection_SQL();
 
-    app.run()
+    app.run(debug=True)

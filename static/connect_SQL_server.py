@@ -36,5 +36,11 @@ def insert_DATA(comment,label,cnxn,cursor):
 # while row: 
 #     print(row)
 #     row = cursor.fetchone()
-
+"""
+CREATE TABLE comment_table(
+    noi_dung nvarchar(max),
+    class nvarchar(max),
+    ngay_them datetime,
+)
+"""
 
