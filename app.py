@@ -42,26 +42,20 @@ def chuyenCauThanhSo(cau):
 
 def predict(model,text):
     arr = []
+    acc = []
     for cau in text.split('.'):
         cau = process(cau)
-        print(cau)
         s = chuyenCauThanhSo(cau)
         if len(s)>0:
             s = pad_sequences([s],maxlen=max_len,padding='post')
             pre = model.predict(s)
-            print(pre.max())
             arr.append(np.argmax(pre))
-    return arr
-def insert_comment(comment):
-    cnxn,cursor = connection_SQL();
-    try:
-        insert_DATA(comment,result,cnxn,cursor)
-    except ValueError:
-        print(ValueError)
-    cursor.close()
-    cnxn.close()
-
-app = Flask(__name__,template_folder='template',static_folder='static')
+            acc.append(pre.max())
+    return arr,acc
+cnxn,cursor = connection_SQL();
+PATH_TEMPLATE_FODER = 'templates'
+PATH_STATIC_FODER = 'static'
+app = Flask(__name__,template_folder=PATH_TEMPLATE_FODER,static_folder=PATH_STATIC_FODER)
 
 @app.route("/",methods=['GET','POST'])
 def home():
@@ -76,26 +70,31 @@ def r_predict():
         if 'comment' in rq.form.keys():
             print('-----------------------------------------')
             text_post = rq.form['comment']
-            label_arr = predict(model,text_post)
+            label_arr,accuracy = predict(model,text_post)
             kq = [decode[i] for i in label_arr]
-            print(kq)
+            for i in range(len(kq)):
+                kq[i] += '('+str(round(accuracy[i],2))+')'
             result = ', '.join(kq) if (len(', '.join(kq).strip())>0) else 'thong tin khong hop le'
             print(result)
-            #insert_comment(result)
-            cnxn,cursor = connection_SQL();
-            try:
-                insert_DATA(text_post,result,cnxn,cursor)
-            except ValueError:
-                print(ValueError)
+            insert_DATA(text_post,result,cnxn,cursor)
             
             print('-----------------------------------------')
             return result
         return 'thong tin khong hop le'
     except Exception as e:
         return str(e)
+# Load css, js, img
 
+@app.route('/<path:rest>', methods=["GET"])
+def web_file_respone(rest:str):
+    if os.path.exists(os.path.join(PATH_STATIC_FODER,rest)): # CSS, JS
+        return app.send_static_file(rest)
+    if os.path.exists(os.path.join(PATH_TEMPLATE_FODER,rest)): # HTML
+        if rest.endswith('.html'):
+            return render_template(rest)
+        else:
+            return send_file(os.path.join(PATH_TEMPLATE_FODER,rest))
+    return ""
 
 if __name__ == "__main__":
-
-
     app.run(debug=True)
