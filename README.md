@@ -1,7 +1,7 @@
 
 # Comment Classification (Python + Flask)
 
-Một ứng dụng web dùng **Flask** để phân loại bình luận (comment classification).
+Một ứng dụng web dùng **Flask** để phân loại bình luận nhận xét của về sản phẩm trên sàn thương mại điện tử
 
 ---
 
